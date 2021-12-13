@@ -33,7 +33,7 @@ def turn(grid):
 
 
 
-file = open("day11.txt")
+file = open("input-2021-11.txt")
 
 grid = []
 
