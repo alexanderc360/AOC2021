@@ -1,4 +1,4 @@
-def insert(template, key, step):
+def insert(template, key):
     polymer = []
     count = 0
     for i in range(len(template) - 1):
@@ -21,6 +21,21 @@ def insert(template, key, step):
 
     return p + " "
 
+
+def insert2(poly, key):
+	cur = ''
+	newPoly = dict(poly)
+	for i in poly:
+		for j in key:
+			if i == j[0]:
+				cur = i[0] + j[1]
+		if cur in newPoly.keys():
+			newPoly[cur] += poly[i]
+		else:
+			newPoly[cur] = 1
+	return newPoly
+	
+
 file = open("input-2021-14.txt")
 
 template = file.readline()
@@ -36,13 +51,27 @@ for line in file:
  #   print(i)
 
 #print(template)
-for i in range(10):
-    template = insert(template, key, i)
+#for i in range(10):
+	#print(i)
+	#template = insert(template, key)
 #    print(template)
 
+
+polymer = {}
+
+for i in range(len(template) - 1):
+	cur = template[i] + template[i + 1]
+	if cur in polymer.keys():
+		polymer[cur] += 1
+	else:
+		polymer[cur] = 1
+
+print(polymer)
+print(insert2(polymer, key))
 from collections import Counter
 
 letterCount = Counter(template.strip())
 
+#print(letterCount.keys())
 
-print(max(letterCount.values()) - min(letterCount.values()))
+#print(max(letterCount.values()) - min(letterCount.values()))
