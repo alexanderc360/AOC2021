@@ -1,8 +1,38 @@
-def fold(axis, val):
+def genNewGrid(axis, val, grid):
+    newGrid = []
+    x = len(grid[0])
+    y = len(grid)
+
     if axis == 'x':
-        print('hotdog ', val)
+        print(val)
+        for i in range(y):
+            buff = []
+            for j in range(val):
+                if grid[i][j] == '#':
+                    buff.append('#')
+                else:
+                    buff.append('.')
+            newGrid.append(buff)
     else:
-        print('hamburger ', val)
+        print(val)
+        for i in range(val):
+            buff = []
+            for j in range(x):
+                if grid[i][j] == '#':
+                    buff.append('#')
+                else:
+                    buff.append('.')
+            newGrid.append(buff)
+
+    #for i in newGrid:
+     #   print(i)
+    return newGrid
+
+
+def fold(axis, val, grid):
+    newGrid = genNewGrid(axis, val, grid)
+
+    return newGrid
 
 
 file = open("input-2021-13.txt")
@@ -39,9 +69,12 @@ for p in points:
                 paper[i][j] = '#'
 
 for line in file:
+    print(line)
     axis = line[line.index('=') - 1:line.index('=')]
     val = int(line[line.index('=') + 1:])
-    fold(axis,val)
+    paper = fold(axis,val, paper)
+    #paper = genNewGrid(axis,val,paper)
 
+print()
 for p in paper:
     print(p)
