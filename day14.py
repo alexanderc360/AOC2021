@@ -1,3 +1,6 @@
+from collections import Counter
+import time
+
 def insert(template, key):
     polymer = []
     count = 0
@@ -9,12 +12,10 @@ def insert(template, key):
         
     for i in range(len(template) - 1):
         buff = template[i] + template[i + 1]
- #       print(buff)
         polymer.append(template[i])
         for j in key:
             if buff == j[0]:
                 polymer.append(j[1])
-    #print(polymer)
     p = ""
     for i in polymer:
         p += i
@@ -23,32 +24,37 @@ def insert(template, key):
 
 
 def insert2(poly, key):
-	cur = ''
-	newPoly = dict(poly)
-	for i in poly:
-		for j in key:
-			if i == j[0]:
-				cur = i[0] + j[1]
-		if cur in newPoly.keys():
-			newPoly[cur] += poly[i]
-		else:
-			newPoly[cur] = 1
-	return newPoly
+    newPoly = {}
+    for i in poly:
+        fst = ''
+        snd = ''
+        for j in key:
+            if i == j[0]:
+                fst = i[0] + j[1]
+                snd = j[1] + i[1]
+        if i == 'B\n':
+            newPoly['B\n'] = 1
+        if fst != '' and snd != '':
+            if fst in newPoly.keys():
+                newPoly[fst] += poly[i]
+            else:
+                newPoly[fst] = poly[i]
+            if snd in newPoly.keys():
+                newPoly[snd] += poly[i]
+            else:
+                newPoly[snd] = poly[i]
+    return newPoly
 	
 
 file = open("input-2021-14.txt")
 
 template = file.readline()
 file.readline()
-#print(template)
 
 key = []
-
 for line in file:
     key.append([i.strip() for i in line.split(" -> ")])
 
-#for i in key:
- #   print(i)
 
 #print(template)
 #for i in range(10):
@@ -64,14 +70,16 @@ for i in range(len(template) - 1):
 	if cur in polymer.keys():
 		polymer[cur] += 1
 	else:
-		polymer[cur] = 1
+            polymer[cur] = 1
 
-print(polymer)
-print(insert2(polymer, key))
-from collections import Counter
+for i in range(40):
+    polymer = insert2(polymer, key)
 
-letterCount = Counter(template.strip())
+letters = {}
+for i, j in polymer.items():
+    if i[0] in letters.keys():
+        letters[i[0]] += (1 * j)
+    else:
+        letters[i[0]] = (1 * j)
 
-#print(letterCount.keys())
-
-#print(max(letterCount.values()) - min(letterCount.values()))
+print(max(letters.values()) - min(letters.values()))
